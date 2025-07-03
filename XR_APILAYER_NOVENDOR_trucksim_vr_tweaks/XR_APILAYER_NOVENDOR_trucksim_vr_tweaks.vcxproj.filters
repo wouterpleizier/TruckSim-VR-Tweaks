@@ -87,8 +87,8 @@
     <None Include="framework\layer_apis.py">
       <Filter>Framework</Filter>
     </None>
-    <None Include="openxr-api-layer.json" />
-    <None Include="openxr-api-layer-32.json" />
+    <None Include="XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.json" />
+    <None Include="XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.json" />
     <None Include="packages.config" />
     <None Include="module.def" />
   </ItemGroup>
