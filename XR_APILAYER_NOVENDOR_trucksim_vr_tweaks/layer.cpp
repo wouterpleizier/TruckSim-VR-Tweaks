@@ -141,30 +141,52 @@ namespace openxr_api_layer {
             return result;
         }
 
-        // https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#xrCreateSession
-        XrResult xrCreateSession(XrInstance instance,
-                                 const XrSessionCreateInfo* createInfo,
-                                 XrSession* session) override {
-            if (createInfo->type != XR_TYPE_SESSION_CREATE_INFO) {
-                return XR_ERROR_VALIDATION_FAILURE;
-            }
+        XrResult xrLocateViews(XrSession session,
+                               const XrViewLocateInfo* viewLocateInfo,
+                               XrViewState* viewState,
+                               uint32_t viewCapacityInput,
+                               uint32_t* viewCountOutput,
+                               XrView* views) override {
+            // Invoke the real implementation.
+            const XrResult result = OpenXrApi::xrLocateViews(session, viewLocateInfo, viewState, viewCapacityInput, viewCountOutput, views);
 
-            TraceLoggingWrite(g_traceProvider,
-                              "xrCreateSession",
-                              TLXArg(instance, "Instance"),
-                              TLArg((int)createInfo->systemId, "SystemId"),
-                              TLArg(createInfo->createFlags, "CreateFlags"));
+            if (XR_SUCCEEDED(result) && viewCapacityInput) {
+                if (viewLocateInfo->viewConfigurationType == XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO) {
+                    const double radToDeg = 180.0 / M_PI;
 
-            const XrResult result = OpenXrApi::xrCreateSession(instance, createInfo, session);
-            if (XR_SUCCEEDED(result)) {
-                if (isSystemHandled(createInfo->systemId)) {
-                    // Do something useful here...
+                    double leftPitch, leftYaw, leftRoll;
+                    getEulerAngles(views[xr::StereoView::Left].pose.orientation, leftPitch, leftYaw, leftRoll);
+
+                    double rightPitch, rightYaw, rightRoll;
+                    getEulerAngles(views[xr::StereoView::Right].pose.orientation, rightPitch, rightYaw, rightRoll);
+
+                    // Pitch in degrees: -90 is down, 0 is forward, 90 is up
+                    m_currentPitch = static_cast<float>((leftPitch + rightPitch) / 2.0 * radToDeg);
+
+                    // Yaw in degrees: 90 is left, 0 is forward, -90 is right, -180 or 180 is back
+                    m_currentYaw = static_cast<float>((leftYaw + rightYaw) / 2.0f * radToDeg);
                 }
-
-                TraceLoggingWrite(g_traceProvider, "xrCreateSession", TLXArg(*session, "Session"));
             }
 
             return result;
+        }
+
+        XrResult xrEndFrame(XrSession session, const XrFrameEndInfo* frameEndInfo) override {
+            if (!std::isnan(m_lastPitch) && !std::isnan(m_currentPitch) && !std::isnan(m_lastYaw) && !std::isnan(m_currentYaw)) {
+                long dx = std::round((m_lastYaw - m_currentYaw) * m_yawMultiplier);
+                long dy = std::round((m_lastPitch - m_currentPitch) * m_pitchMultiplier);
+
+                if (dx != 0 || dy != 0) {
+                    Log(fmt::format("Moving mouse ({}, {})\n", dx, dy));
+                    mouse_event(MOUSEEVENTF_MOVE, static_cast<DWORD>(dx), static_cast<DWORD>(dy), 0, 0);
+                }
+            }
+
+            m_lastPitch = m_currentPitch;
+            m_lastYaw = m_currentYaw;
+
+            // Invoke the real implementation.
+            return OpenXrApi::xrEndFrame(session, frameEndInfo);
         }
 
       private:
@@ -172,8 +194,28 @@ namespace openxr_api_layer {
             return systemId == m_systemId;
         }
 
+        void getEulerAngles(XrQuaternionf q, double& pitch, double& yaw, double& roll) {
+            
+            pitch = static_cast<float>(std::asin(2.0 * (q.w * q.x - q.z * q.y)));
+
+            const double sinYCosP = 2.0 * (q.w * q.y + q.z * q.x);
+            const double cosYCosP = 1.0 - 2.0 * (q.x * q.x + q.y * q.y);
+            yaw = static_cast<float>(std::atan2(sinYCosP, cosYCosP));
+
+            const double sinRCosP = 2.0 * (q.w * q.z + q.x * q.y);
+            const double cosRCosP = 1.0 - 2.0 * (q.z * q.z + q.x * q.x);
+            roll = static_cast<float>(std::atan2(sinRCosP, cosRCosP));
+        }
+
         bool m_bypassApiLayer{false};
         XrSystemId m_systemId{XR_NULL_SYSTEM_ID};
+
+        double m_lastPitch{std::numeric_limits<double>::quiet_NaN()};
+        double m_lastYaw{std::numeric_limits<double>::quiet_NaN()};
+        double m_currentPitch{std::numeric_limits<double>::quiet_NaN()};
+        double m_currentYaw{std::numeric_limits<double>::quiet_NaN()};
+        double m_pitchMultiplier{50.0};
+        double m_yawMultiplier{50.0};
     };
 
     // This method is required by the framework to instantiate your OpenXrApi implementation.
