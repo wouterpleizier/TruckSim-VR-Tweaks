@@ -77,31 +77,31 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\obj\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>$(SolutionName)</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\obj\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>$(SolutionName)-32</TargetName>
+    <TargetName>$(ProjectName)-32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\obj\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>$(SolutionName)</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\obj\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>$(SolutionName)-32</TargetName>
+    <TargetName>$(ProjectName)-32</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>LAYER_NAME="$(SolutionName)";_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LAYER_NAME="$(ProjectName)";_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -118,7 +118,7 @@
       <ModuleDefinitionFile>module.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\scripts\sed.exe "s/XR_APILAYER_name/$(SolutionName)/g" $(ProjectDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.json &gt; $(OutDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.json
+      <Command>$(SolutionDir)\scripts\sed.exe "s/XR_APILAYER_name/$(ProjectName)/g" $(ProjectDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.json &gt; $(OutDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.json
         copy $(SolutionDir)\scripts\Install-Layer.ps1 $(OutDir)
         copy $(SolutionDir)\scripts\Uninstall-Layer.ps1 $(OutDir)
       </Command>
@@ -145,7 +145,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>LAYER_NAME="$(SolutionName)";_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LAYER_NAME="$(ProjectName)";_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -162,7 +162,7 @@
       <ModuleDefinitionFile>module.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\scripts\sed.exe "s/XR_APILAYER_name/$(SolutionName)/g" $(ProjectDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.json &gt; $(OutDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.json
+      <Command>$(SolutionDir)\scripts\sed.exe "s/XR_APILAYER_name/$(ProjectName)/g" $(ProjectDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.json &gt; $(OutDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.json
         copy $(SolutionDir)\scripts\Install-Layer32.ps1 $(OutDir)
         copy $(SolutionDir)\scripts\Uninstall-Layer32.ps1 $(OutDir)
       </Command>
@@ -191,7 +191,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>LAYER_NAME="$(SolutionName)";NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LAYER_NAME="$(ProjectName)";NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -210,7 +210,7 @@
       <ModuleDefinitionFile>module.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\scripts\sed.exe "s/XR_APILAYER_name/$(SolutionName)/g" $(ProjectDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.json &gt; $(OutDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.json
+      <Command>$(SolutionDir)\scripts\sed.exe "s/XR_APILAYER_name/$(ProjectName)/g" $(ProjectDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.json &gt; $(OutDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.json
         copy $(SolutionDir)\scripts\Install-Layer.ps1 $(OutDir)
         copy $(SolutionDir)\scripts\Uninstall-Layer.ps1 $(OutDir)
       </Command>
@@ -239,7 +239,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>LAYER_NAME="$(SolutionName)";NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LAYER_NAME="$(ProjectName)";NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -258,7 +258,7 @@
       <ModuleDefinitionFile>module.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\scripts\sed.exe "s/XR_APILAYER_name/$(SolutionName)/g" $(ProjectDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.json &gt; $(OutDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.json
+      <Command>$(SolutionDir)\scripts\sed.exe "s/XR_APILAYER_name/$(ProjectName)/g" $(ProjectDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.json &gt; $(OutDir)\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.json
         copy $(SolutionDir)\scripts\Install-Layer32.ps1 $(OutDir)
         copy $(SolutionDir)\scripts\Uninstall-Layer32.ps1 $(OutDir)
       </Command>
