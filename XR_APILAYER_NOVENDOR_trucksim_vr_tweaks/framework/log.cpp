@@ -30,10 +30,10 @@ namespace {
 namespace openxr_api_layer::log {
     extern std::ofstream logStream;
 
-    // {cbf3adcd-42b1-4c38-830c-91980af201f8}
+    // {063aa5bf-9491-5d83-474a-ce1a8dede5a8}
     TRACELOGGING_DEFINE_PROVIDER(g_traceProvider,
-                                 "OpenXRTemplate",
-                                 (0xcbf3adcd, 0x42b1, 0x4c38, 0x83, 0x0c, 0x91, 0x98, 0x0a, 0xf2, 0x01, 0xf8));
+                                 "TruckSimVRTweaks",
+                                 (0x063aa5bf, 0x9491, 0x5d83, 0x47, 0x4a, 0xce, 0x1a, 0x8d, 0xed, 0xe5, 0xa8));
 
     TraceLoggingActivity<g_traceProvider> g_traceActivity;
 
