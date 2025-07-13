@@ -26,6 +26,7 @@
 #include "pch.h"
 
 #include "layer.h"
+#include "inputtweaks.h"
 #include <log.h>
 #include <util.h>
 
@@ -109,6 +110,8 @@ namespace openxr_api_layer {
             TraceLoggingWrite(g_traceProvider, "xrCreateInstance", TLArg(runtimeName.c_str(), "RuntimeName"));
             Log(fmt::format("Using OpenXR runtime: {}\n", runtimeName));
 
+            m_inputTweaks.initialize();
+
             return XR_SUCCESS;
         }
 
@@ -154,10 +157,8 @@ namespace openxr_api_layer {
                 if (viewLocateInfo->viewConfigurationType == XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO) {
                     const double radToDeg = 180.0 / M_PI;
 
-                    double leftPitch, leftYaw, leftRoll;
+                    double leftPitch, leftYaw, leftRoll, rightPitch, rightYaw, rightRoll;
                     getEulerAngles(views[xr::StereoView::Left].pose.orientation, leftPitch, leftYaw, leftRoll);
-
-                    double rightPitch, rightYaw, rightRoll;
                     getEulerAngles(views[xr::StereoView::Right].pose.orientation, rightPitch, rightYaw, rightRoll);
 
                     // Pitch in degrees: -90 is down, 0 is forward, 90 is up
@@ -172,18 +173,7 @@ namespace openxr_api_layer {
         }
 
         XrResult xrEndFrame(XrSession session, const XrFrameEndInfo* frameEndInfo) override {
-            if (!std::isnan(m_lastPitch) && !std::isnan(m_currentPitch) && !std::isnan(m_lastYaw) && !std::isnan(m_currentYaw)) {
-                long dx = std::lround((m_lastYaw - m_currentYaw) * m_yawMultiplier);
-                long dy = std::lround((m_lastPitch - m_currentPitch) * m_pitchMultiplier);
-
-                if (dx != 0 || dy != 0) {
-                    Log(fmt::format("Moving mouse ({}, {})\n", dx, dy));
-                    mouse_event(MOUSEEVENTF_MOVE, static_cast<DWORD>(dx), static_cast<DWORD>(dy), 0, 0);
-                }
-            }
-
-            m_lastPitch = m_currentPitch;
-            m_lastYaw = m_currentYaw;
+            m_inputTweaks.update(m_currentPitch, m_currentYaw);
 
             // Invoke the real implementation.
             return OpenXrApi::xrEndFrame(session, frameEndInfo);
@@ -210,12 +200,9 @@ namespace openxr_api_layer {
         bool m_bypassApiLayer{false};
         XrSystemId m_systemId{XR_NULL_SYSTEM_ID};
 
-        double m_lastPitch{std::numeric_limits<double>::quiet_NaN()};
-        double m_lastYaw{std::numeric_limits<double>::quiet_NaN()};
+        InputTweaks m_inputTweaks{};
         double m_currentPitch{std::numeric_limits<double>::quiet_NaN()};
         double m_currentYaw{std::numeric_limits<double>::quiet_NaN()};
-        double m_pitchMultiplier{50.0};
-        double m_yawMultiplier{50.0};
     };
 
     // This method is required by the framework to instantiate your OpenXrApi implementation.
