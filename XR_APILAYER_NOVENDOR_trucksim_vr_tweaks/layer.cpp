@@ -173,8 +173,8 @@ namespace openxr_api_layer {
 
         XrResult xrEndFrame(XrSession session, const XrFrameEndInfo* frameEndInfo) override {
             if (!std::isnan(m_lastPitch) && !std::isnan(m_currentPitch) && !std::isnan(m_lastYaw) && !std::isnan(m_currentYaw)) {
-                long dx = std::round((m_lastYaw - m_currentYaw) * m_yawMultiplier);
-                long dy = std::round((m_lastPitch - m_currentPitch) * m_pitchMultiplier);
+                long dx = std::lround((m_lastYaw - m_currentYaw) * m_yawMultiplier);
+                long dy = std::lround((m_lastPitch - m_currentPitch) * m_pitchMultiplier);
 
                 if (dx != 0 || dy != 0) {
                     Log(fmt::format("Moving mouse ({}, {})\n", dx, dy));
