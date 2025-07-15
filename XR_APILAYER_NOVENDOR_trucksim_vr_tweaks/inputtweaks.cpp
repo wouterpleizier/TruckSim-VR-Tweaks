@@ -9,7 +9,7 @@
 void openxr_api_layer::InputTweaks::initialize() {
     if (!m_isInitialized) {
         try {
-            std::ifstream stream(openxr_api_layer::dllHome / "TruckSim-VR-Tweaks.json");
+            std::ifstream stream(openxr_api_layer::dllHome / "TruckSimVRTweaks.json");
             nlohmann::json jsonSettings = nlohmann::json::parse(stream);
             m_settings = jsonSettings.template get<Settings>();
             log::Log(fmt::format("Loaded settings: {}\n", jsonSettings.dump(4)));
