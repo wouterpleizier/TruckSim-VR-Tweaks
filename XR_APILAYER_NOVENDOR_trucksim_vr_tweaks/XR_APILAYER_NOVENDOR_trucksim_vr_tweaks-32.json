@@ -1,14 +1,14 @@
 {
   "file_format_version" : "1.0.0",
-  "api_layer": {
-    "name": "XR_APILAYER_name",
-    "library_path": ".\\XR_APILAYER_name-32.dll",
-    "api_version": "1.0",
-    "implementation_version": "1",
-    "description": "An API layer template",
-    "functions": {
-      "xrNegotiateLoaderApiLayerInterface": "xrNegotiateLoaderApiLayerInterface"
-    },
-    "disable_environment": "DISABLE_XR_APILAYER_name"
-  }
+    "api_layer": {
+        "name": "XR_APILAYER_NOVENDOR_trucksim_vr_tweaks",
+        "library_path": ".\\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks-32.dll",
+        "api_version": "1.0",
+        "implementation_version": "1",
+        "description": "VR tweaks for Euro Truck Simulator 2 and American Truck Simulator",
+        "functions": {
+            "xrNegotiateLoaderApiLayerInterface": "xrNegotiateLoaderApiLayerInterface"
+        },
+        "disable_environment": "DISABLE_XR_APILAYER_NOVENDOR_trucksim_vr_tweaks"
+    }
 }
