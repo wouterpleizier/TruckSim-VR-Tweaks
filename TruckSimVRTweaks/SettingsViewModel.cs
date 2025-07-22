@@ -1,0 +1,137 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace TruckSimVRTweaks
+{
+    public partial class SettingsViewModel : ObservableObject
+    {
+        private static string SettingsPath { get; } = Path.Combine(AppContext.BaseDirectory, "TruckSimVRTweaks.json");
+
+        private readonly JsonSerializerOptions _jsonSerializerOptions = new()
+        {
+            IgnoreReadOnlyProperties = true,
+            WriteIndented = true,
+            Converters =
+            {
+                new JsonStringEnumConverter(namingPolicy: null, allowIntegerValues: false),
+                new JsonStringGuidConverter()
+            }
+        };
+
+        [ObservableProperty]
+        public partial Settings Settings { get; private set; }
+
+        public Guid InputDeviceGuid
+        {
+            get { return Settings.InputDeviceGuid; }
+            set
+            {
+                Guid previousValue = Settings.InputDeviceGuid;
+
+                if (value != Guid.Empty && InputPoller.Instance.InputDeviceNames.TryGetValue(value, out var name))
+                {
+                    InputPoller.Instance.InputDeviceGuid = value;
+                    Settings.InputDeviceGuid = value;
+                    Settings.InputDeviceName = name;
+                }
+                else
+                {
+                    InputPoller.Instance.InputDeviceGuid = Guid.Empty;
+                    Settings.InputDeviceGuid = Guid.Empty;
+                    Settings.InputDeviceName = string.Empty;
+                }
+
+                if (previousValue != value)
+                {
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public Dictionary<SimulatedMouseTrigger, string> SimulatedMouseTriggers { get; } = new()
+        {
+            { SimulatedMouseTrigger.AlwaysDisabled, "Disabled" },
+            { SimulatedMouseTrigger.AlwaysEnabled, "Always enabled" },
+            { SimulatedMouseTrigger.HoldToEnable, "Hold button to enable" },
+            { SimulatedMouseTrigger.PressToToggle, "Press button to toggle" },
+        };
+
+        public SettingsViewModel()
+        {
+            Settings? settings = null;
+
+            if (File.Exists(SettingsPath))
+            {
+                try
+                {
+                    using FileStream stream = File.OpenRead(SettingsPath);
+                    settings = JsonSerializer.Deserialize<Settings>(stream, _jsonSerializerOptions);
+                }
+                catch (Exception exception)
+                {
+                    MessageBoxUtil.ShowError("Failed to load settings", exception);
+                }
+            }
+
+            Settings = settings ?? new();
+            InputDeviceGuid = Settings.InputDeviceGuid;
+        }
+
+        public void HandleClosing(object? sender, CancelEventArgs e)
+        {
+            try
+            {
+                using FileStream stream = File.Create(SettingsPath);
+                JsonSerializer.Serialize(stream, Settings, _jsonSerializerOptions);
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtil.ShowError("Failed to save settings", exception);
+            }
+        }
+
+        [RelayCommand]
+        private void BrowseGamePath()
+        {
+            string? defaultDirectory = Path.GetDirectoryName(Settings.GamePath);
+            if (!Path.Exists(defaultDirectory))
+            {
+                defaultDirectory = AppContext.BaseDirectory;
+            }
+
+            Microsoft.Win32.OpenFileDialog dialog = new()
+            {
+                DefaultDirectory = defaultDirectory,
+                Filter = "Executable Files (.exe)|*.exe|All Files|*.*",
+                DefaultExt = ".exe"
+            };
+
+            if (dialog.ShowDialog() is true)
+            {
+                Settings.GamePath = dialog.FileName;
+            }
+        }
+
+        [RelayCommand]
+        private void PlayGame()
+        {
+            // TODO
+        }
+
+        [RelayCommand]
+        private void CreateDesktopShortcut()
+        {
+            // TODO
+        }
+
+        [RelayCommand]
+        private void CreateSteamShortcut()
+        {
+            // TODO
+        }
+    }
+}
