@@ -106,7 +106,7 @@ namespace TruckSimVRTweaks
             Microsoft.Win32.OpenFileDialog dialog = new()
             {
                 DefaultDirectory = defaultDirectory,
-                Filter = "Executable Files (.exe)|*.exe|All Files|*.*",
+                Filter = "Euro Truck Simulator 2 / American Truck Simulator|eurotrucks2.exe;amtrucks.exe|All Executables|*.exe|All Files|*.*",
                 DefaultExt = ".exe"
             };
 
