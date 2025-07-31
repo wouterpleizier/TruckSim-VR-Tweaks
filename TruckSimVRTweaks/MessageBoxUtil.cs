@@ -1,21 +1,32 @@
-﻿using System.Windows;
+﻿using System.Text;
+using System.Windows;
 
 namespace TruckSimVRTweaks
 {
     public static class MessageBoxUtil
     {
-        public static MessageBoxResult ShowError(string message, Exception? exception = null)
+        public const string Caption = nameof(TruckSimVRTweaks);
+
+        public static MessageBoxResult ShowError(string message)
         {
-            if (exception != null)
+            return MessageBox.Show(message, Caption, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        public static MessageBoxResult ShowError(string message, Exception exception,
+            string? additionalMessage = null, MessageBoxButton buttonType = MessageBoxButton.OK)
+        {
+            StringBuilder messageBuilder = new(message);
+            messageBuilder.Append(": ");
+            messageBuilder.Append(exception.Message);
+
+            if (additionalMessage != null)
             {
-                return MessageBox.Show($"{message}{Environment.NewLine}{Environment.NewLine}{exception}",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                messageBuilder.AppendLine();
+                messageBuilder.AppendLine();
+                messageBuilder.Append(additionalMessage);
             }
-            else
-            {
-                return MessageBox.Show(message,
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+
+            return MessageBox.Show(messageBuilder.ToString(), Caption, buttonType, MessageBoxImage.Error);
         }
     }
 }

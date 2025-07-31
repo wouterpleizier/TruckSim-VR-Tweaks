@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -73,7 +74,7 @@ namespace TruckSimVRTweaks
                 }
                 catch (Exception exception)
                 {
-                    MessageBoxUtil.ShowError("Failed to load settings", exception);
+                    MessageBoxUtil.ShowError("Failed to load settings", exception, $"Default settings will be used.");
                 }
             }
 
@@ -83,15 +84,13 @@ namespace TruckSimVRTweaks
 
         public void HandleClosing(object? sender, CancelEventArgs e)
         {
-            try
-            {
-                using FileStream stream = File.Create(SettingsPath);
-                JsonSerializer.Serialize(stream, Settings, _jsonSerializerOptions);
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtil.ShowError("Failed to save settings", exception);
-            }
+            SaveSettings();
+        }
+
+        private void SaveSettings()
+        {
+            using FileStream stream = File.Create(SettingsPath);
+            JsonSerializer.Serialize(stream, Settings, _jsonSerializerOptions);
         }
 
         [RelayCommand]
@@ -119,7 +118,9 @@ namespace TruckSimVRTweaks
         [RelayCommand]
         private void PlayGame()
         {
-            // TODO
+            SaveSettings();
+            ApiLayerManager.EnableApiLayer();
+            Process.Start(Settings.GamePath, Settings.GameArguments);
         }
 
         [RelayCommand]
