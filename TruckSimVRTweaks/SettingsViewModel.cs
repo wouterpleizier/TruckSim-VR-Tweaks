@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Windows;
 
 namespace TruckSimVRTweaks
 {
@@ -126,7 +127,30 @@ namespace TruckSimVRTweaks
         [RelayCommand]
         private void CreateDesktopShortcut()
         {
-            // TODO
+            try
+            {
+                IWshRuntimeLibrary.WshShell shell = new();
+
+                string shortcutPath = Path.Combine(
+                    shell.SpecialFolders.Item("Desktop"),
+                    $"{App.Title} - {Path.GetFileNameWithoutExtension(Settings.GamePath)}.lnk");
+
+                if (File.Exists(shortcutPath) && MessageBox.Show("Shortcut already exists. Overwrite?", App.Title,
+                    MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
+                IWshRuntimeLibrary.IWshShortcut shortcut = shell.CreateShortcut(shortcutPath);
+                shortcut.TargetPath = Environment.ProcessPath;
+                shortcut.Arguments = $"-gamepath \"{Settings.GamePath}\" -gameargs \"{Settings.GameArguments}\"";
+                shortcut.IconLocation = Settings.GamePath;
+                shortcut.Save();
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtil.ShowError("Failed to create desktop shortcut", exception);
+            }
         }
 
         [RelayCommand]
