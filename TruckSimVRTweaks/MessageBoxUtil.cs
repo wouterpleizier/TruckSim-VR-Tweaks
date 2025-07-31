@@ -5,11 +5,9 @@ namespace TruckSimVRTweaks
 {
     public static class MessageBoxUtil
     {
-        public const string Caption = nameof(TruckSimVRTweaks);
-
         public static MessageBoxResult ShowError(string message)
         {
-            return MessageBox.Show(message, Caption, MessageBoxButton.OK, MessageBoxImage.Error);
+            return MessageBox.Show(message, App.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         public static MessageBoxResult ShowError(string message, Exception exception,
@@ -26,7 +24,7 @@ namespace TruckSimVRTweaks
                 messageBuilder.Append(additionalMessage);
             }
 
-            return MessageBox.Show(messageBuilder.ToString(), Caption, buttonType, MessageBoxImage.Error);
+            return MessageBox.Show(messageBuilder.ToString(), App.Title, buttonType, MessageBoxImage.Error);
         }
     }
 }

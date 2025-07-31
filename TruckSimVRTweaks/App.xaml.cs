@@ -7,6 +7,8 @@ namespace TruckSimVRTweaks
 {
     public partial class App : Application
     {
+        public const string Title = "TruckSim VR Tweaks";
+
         private DispatcherTimer? _timer;
 
         protected override void OnStartup(StartupEventArgs e)
@@ -122,10 +124,10 @@ namespace TruckSimVRTweaks
                     else
                     {
                         MessageBoxResult result = MessageBox.Show(
-                            $"{nameof(TruckSimVRTweaks)} is waiting for {gameProcessName} to start, but it looks " +
-                            $"like that hasn't happened yet (or the game has already exited). Would you like to wait " +
-                            $"an additional {(int)interval.TotalSeconds} seconds?",
-                            MessageBoxUtil.Caption,
+                            $"{Title} is waiting for {gameProcessName} to start, but it looks like that hasn't " +
+                            $"happened yet (or the game has already exited). Would you like to wait an additional " +
+                            $"{(int)interval.TotalSeconds} seconds?",
+                            Title,
                             MessageBoxButton.YesNo);
 
                         if (result == MessageBoxResult.Yes)
