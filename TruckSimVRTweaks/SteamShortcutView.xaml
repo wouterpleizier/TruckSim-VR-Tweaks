@@ -1,0 +1,72 @@
+﻿<Window x:Class="TruckSimVRTweaks.SteamShortcutView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TruckSimVRTweaks"
+        d:DataContext="{d:DesignInstance Type=local:SteamShortcutViewModel}"
+        mc:Ignorable="d"
+        Title="Create Steam shortcut"
+        WindowStyle="ToolWindow"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        Width="400" SizeToContent="Height">
+    <StackPanel Margin="10">
+        <StackPanel.Resources>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0,0,0,10"/>
+            </Style>
+        </StackPanel.Resources>
+
+        <TextBlock>
+            Follow these steps to automatically run TruckSim VR Tweaks in the background whenever you play the target
+            game via Steam.
+        </TextBlock>
+
+        <DockPanel Margin="0,0,0,10">
+            <TextBlock Margin="0">
+                1. Copy the following text:
+            </TextBlock>
+            <Button DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,0" Content="Copy"
+                    Command="{Binding CopyLaunchOptionsTextCommand}"/>
+            <TextBox DockPanel.Dock="Right" Margin="5,0,0,0" VerticalContentAlignment="Center"
+                     Text="{Binding LaunchOptionsText, Mode=OneWay}" IsReadOnly="True"/>
+        </DockPanel>
+
+        <TextBlock>
+            2. <Hyperlink NavigateUri="steam://open/games" RequestNavigate="HandleHyperlinkClicked"
+                          ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=NavigateUri}">
+                Open your Steam library
+            </Hyperlink>
+        </TextBlock>
+
+        <TextBlock>
+            3. Right click the target game and click 'Properties...'
+            <TextBlock Margin="0">
+                <Hyperlink>(show example)</Hyperlink>
+                <Popup DataContext="{Binding RelativeSource={RelativeSource AncestorType=TextBlock}, Mode=OneWay}"
+                       IsOpen="{Binding IsMouseOver, Mode=OneWay}" PlacementTarget="{Binding ., Mode=OneWay}"
+                       StaysOpen="True">
+                    <Image Source="/Resources/SteamShortcut_Properties.png" MaxWidth="400"/>
+                </Popup>
+            </TextBlock>
+        </TextBlock>
+
+        <TextBlock>
+            4. Paste the copied text in the Launch Options field
+            <TextBlock Margin="0">
+                <Hyperlink>(show example)</Hyperlink>
+                <Popup DataContext="{Binding RelativeSource={RelativeSource AncestorType=TextBlock}, Mode=OneWay}"
+                       IsOpen="{Binding IsMouseOver, Mode=OneWay}" PlacementTarget="{Binding ., Mode=OneWay}"
+                       StaysOpen="True">
+                    <Image Source="/Resources/SteamShortcut_LaunchOptions.png" MaxWidth="600"/>
+                </Popup>
+            </TextBlock>
+        </TextBlock>
+
+        <TextBlock>5. Close the target game's properties</TextBlock>
+    </StackPanel>
+</Window>

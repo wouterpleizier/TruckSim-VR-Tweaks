@@ -156,7 +156,12 @@ namespace TruckSimVRTweaks
         [RelayCommand]
         private void CreateSteamShortcut()
         {
-            // TODO
+            new SteamShortcutView()
+            {
+                Owner = Application.Current.MainWindow,
+                DataContext = new SteamShortcutViewModel(Settings.GameArguments)
+            }
+            .ShowDialog();
         }
     }
 }

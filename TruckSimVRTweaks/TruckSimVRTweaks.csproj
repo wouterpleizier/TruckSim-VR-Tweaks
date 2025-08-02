@@ -27,4 +27,9 @@
     <PackageReference Include="Vortice.DirectInput" Version="3.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="Resources\SteamShortcut_LaunchOptions.png" />
+    <Resource Include="Resources\SteamShortcut_Properties.png" />
+  </ItemGroup>
+
 </Project>
