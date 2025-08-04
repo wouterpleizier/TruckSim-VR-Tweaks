@@ -58,8 +58,8 @@ namespace TruckSimVRTweaks
         {
             { SimulatedMouseTrigger.AlwaysDisabled, "Disabled" },
             { SimulatedMouseTrigger.AlwaysEnabled, "Always enabled" },
-            { SimulatedMouseTrigger.HoldToEnable, "Hold button to enable" },
-            { SimulatedMouseTrigger.PressToToggle, "Press button to toggle" },
+            { SimulatedMouseTrigger.HoldToEnable, "Hold to enable" },
+            { SimulatedMouseTrigger.PressToToggle, "Press to toggle" },
         };
 
         public SettingsViewModel()
