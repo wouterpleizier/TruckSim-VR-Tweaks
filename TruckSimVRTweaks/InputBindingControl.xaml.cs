@@ -72,10 +72,18 @@ namespace TruckSimVRTweaks
             else
             {
                 StringBuilder text = new StringBuilder()
-                    .AppendFormat(CultureInfo.InvariantCulture, "{0} {1}", InputBinding.Type, InputBinding.Value);
+                    .Append(InputBinding.Type.ToString())
+                    .Append(' ');
 
-                if (InputBinding.Type is InputType.POV0 or InputType.POV1 or InputType.POV2 or InputType.POV3)
+                if (InputBinding.Type is InputType.Button)
                 {
+                    // Most drivers and games seems to show 1-based button indices to the user, so we'll do that too.
+                    text.Append(InputBinding.Value + 1);
+                }
+                else if (InputBinding.Type is InputType.POV0 or InputType.POV1 or InputType.POV2 or InputType.POV3)
+                {
+                    text.Append(InputBinding.Value);
+
                     string? direction = InputBinding.Value switch
                     {
                         0 => "Up",
