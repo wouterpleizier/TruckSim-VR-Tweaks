@@ -71,25 +71,34 @@ namespace TruckSimVRTweaks
             }
             else
             {
-                StringBuilder text = new StringBuilder()
-                    .Append(InputBinding.Type.ToString())
-                    .Append(' ');
+                StringBuilder text = new();
 
                 if (InputBinding.Type is InputType.Button)
                 {
                     // Most drivers and games seems to show 1-based button indices to the user, so we'll do that too.
-                    text.Append(InputBinding.Value + 1);
+                    text.AppendFormat("Button {0}", InputBinding.Value + 1);
                 }
                 else if (InputBinding.Type is InputType.POV0 or InputType.POV1 or InputType.POV2 or InputType.POV3)
                 {
+                    text.Append("POV");
+                    if (InputBinding.Type != InputType.POV0)
+                    {
+                        text.Append((int)InputBinding.Type - (int)InputType.POV0 + 1);
+                    }
+
+                    text.Append(' ');
                     text.Append(InputBinding.Value);
 
                     string? direction = InputBinding.Value switch
                     {
                         0 => "Up",
+                        4500 => "Up + right",
                         9000 => "Right",
+                        13500 => "Down + right",
                         18000 => "Down",
+                        22500 => "Down + left",
                         27000 => "Left",
+                        31500 => "Up + left",
                         _ => null
                     };
 
@@ -98,7 +107,7 @@ namespace TruckSimVRTweaks
                         text.AppendFormat(" ({0})", direction);
                     }
                 }
-
+                
                 AssignButtonContent.Text = text.ToString();
                 AssignButtonContent.FontWeight = FontWeights.Regular;
                 AssignButtonContent.Opacity = 1.0;
