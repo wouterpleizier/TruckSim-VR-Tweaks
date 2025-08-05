@@ -50,7 +50,8 @@
                 <Popup DataContext="{Binding RelativeSource={RelativeSource AncestorType=TextBlock}, Mode=OneWay}"
                        IsOpen="{Binding IsMouseOver, Mode=OneWay}" PlacementTarget="{Binding ., Mode=OneWay}"
                        StaysOpen="True">
-                    <Image Source="/Resources/SteamShortcut_Properties.png" MaxWidth="400"/>
+                    <Image Source="/Resources/SteamShortcut_Properties.png" MaxWidth="400"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Popup>
             </TextBlock>
         </TextBlock>
@@ -62,7 +63,8 @@
                 <Popup DataContext="{Binding RelativeSource={RelativeSource AncestorType=TextBlock}, Mode=OneWay}"
                        IsOpen="{Binding IsMouseOver, Mode=OneWay}" PlacementTarget="{Binding ., Mode=OneWay}"
                        StaysOpen="True">
-                    <Image Source="/Resources/SteamShortcut_LaunchOptions.png" MaxWidth="600"/>
+                    <Image Source="/Resources/SteamShortcut_LaunchOptions.png" MaxWidth="650"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Popup>
             </TextBlock>
         </TextBlock>
