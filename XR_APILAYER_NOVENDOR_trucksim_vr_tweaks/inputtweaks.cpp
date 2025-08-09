@@ -120,7 +120,7 @@ void openxr_api_layer::InputTweaks::update(double pitch, double yaw) {
         break;
 
     case SimulatedMouseTrigger::PressToToggle:
-        if (!m_settings.InputBindings.ToggleMouse.isPressed()) {
+        if (m_settings.InputBindings.ToggleMouse.isPressed()) {
             m_simulatedMouseIsActive = !m_simulatedMouseIsActive;
         }
         break;
