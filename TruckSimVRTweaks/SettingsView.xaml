@@ -9,152 +9,161 @@
         mc:Ignorable="d"
         Title="{x:Static local:App.Title}"
         WindowStyle="ToolWindow"
-        Width="600" Height="450"
-        MinWidth="600" MinHeight="450">
+        Width="600" SizeToContent="Height"
+        MinWidth="500" MinHeight="300">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:CallMethodAction TargetObject="{Binding}" MethodName="HandleClosing"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
-    <StackPanel>
-        <GroupBox Header="General settings" Padding="10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" HorizontalAlignment="Right"
-                       VerticalAlignment="Center" Margin="0,0,0,5" Content="Input device"/>
-                <ComboBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,5"
-                          ItemsSource="{Binding Source={x:Static local:InputPoller.Instance}, Path=InputDeviceNames}"
-                          SelectedValue="{Binding InputDeviceGuid}"
-                          SelectedValuePath="Key" DisplayMemberPath="Value"/>
-
-                <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Content="Mouse simulation"/>
-                <ComboBox Grid.Column="1" Grid.Row="1"
-                          ItemsSource="{Binding SimulatedMouseTriggers}" DisplayMemberPath="Value"
-                          SelectedValue="{Binding Settings.SimulatedMouseTrigger}" SelectedValuePath="Key" />
-
-                <DockPanel Grid.Column="2" Grid.Row="1" IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}">
-                    <Label DockPanel.Dock="Left" HorizontalAlignment="Right" VerticalAlignment="Center"
-                           Margin="10,0,0,0" Content="Sensitivity"/>
-                    
-                    <Label DockPanel.Dock="Right" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"
-                           Content="{Binding Settings.SimulatedMouseSensitivity}" ContentStringFormat="0"/>
-                    
-                    <Slider VerticalAlignment="Center" Value="{Binding Settings.SimulatedMouseSensitivity}"
-                            Minimum="0" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True"/>
-                </DockPanel>
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Header="Input bindings" Padding="10">
-            <GroupBox.Style>
-                <Style TargetType="GroupBox">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding InputDeviceGuid}" Value="00000000-0000-0000-0000-000000000000">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Padding" Value="10"/>
                 </Style>
-            </GroupBox.Style>
+            </StackPanel.Resources>
             
-            <Grid Grid.IsSharedSizeScope="True">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <local:InputBindingControl Grid.Column="0" Grid.Row="0" Label="Escape"
-                                           InputBinding="{Binding Settings.InputBindings.Escape}"/>
-
-                <local:InputBindingControl Grid.Column="2" Grid.Row="0" Label="Simulate mouse"
-                                           InputBinding="{Binding Settings.InputBindings.ToggleMouse}"
-                                           IsEnabled="{Binding Settings.IsSimulatedMouseEnabledWithInputBinding}"/>
-
-                <local:InputBindingControl Grid.Column="0" Grid.Row="1" Label="Left click"
-                                           InputBinding="{Binding Settings.InputBindings.MouseLeftClick}"
-                                           IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
-
-                <local:InputBindingControl Grid.Column="2" Grid.Row="1" Label="Right click"
-                                           InputBinding="{Binding Settings.InputBindings.MouseRightClick}"
-                                           IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
-
-                <local:InputBindingControl Grid.Column="0" Grid.Row="2" Label="Scroll up"
-                                           InputBinding="{Binding Settings.InputBindings.MouseScrollUp}"
-                                           IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
-
-                <local:InputBindingControl Grid.Column="2" Grid.Row="2" Label="Scroll down"
-                                           InputBinding="{Binding Settings.InputBindings.MouseScrollDown}"
-                                           IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Header="Game" Padding="10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,5" Content="Game path"/>
-                <DockPanel Grid.Column="1" Grid.Row="0" Margin="0,0,0,5" >
-                    <Button DockPanel.Dock="Right" Padding="10,0" Margin="5,0,0,0" Content="Browse..."
-                            Command="{Binding BrowseGamePathCommand}"/>
-
-                    <TextBox VerticalContentAlignment="Center"
-                             Text="{Binding Settings.GamePath, UpdateSourceTrigger=PropertyChanged}"/>
-                </DockPanel>
-
-                <Label Grid.Column="0" Grid.Row="1" Margin="0,0,0,10" Content="Arguments"/>
-                <TextBox Grid.Column="1" Grid.Row="1" Margin="0,0,0,10" VerticalContentAlignment="Center"
-                         Text="{Binding Settings.GameArguments, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
+            <GroupBox Header="General settings">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" HorizontalAlignment="Right"
+                           VerticalAlignment="Center" Margin="0,0,0,5" Content="Input device"/>
+                    <ComboBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,5"
+                              ItemsSource="{Binding Source={x:Static local:InputPoller.Instance}, Path=InputDeviceNames}"
+                              SelectedValue="{Binding InputDeviceGuid}"
+                              SelectedValuePath="Key" DisplayMemberPath="Value"/>
+
+                    <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center"
+                           Content="Mouse simulation"/>
+                    <ComboBox Grid.Column="1" Grid.Row="1"
+                              ItemsSource="{Binding SimulatedMouseTriggers}" DisplayMemberPath="Value"
+                              SelectedValue="{Binding Settings.SimulatedMouseTrigger}" SelectedValuePath="Key" />
+
+                    <DockPanel Grid.Column="2" Grid.Row="1" IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}">
+                        <Label DockPanel.Dock="Left" HorizontalAlignment="Right" VerticalAlignment="Center"
+                               Margin="10,0,0,0" Content="Sensitivity"/>
+
+                        <Label DockPanel.Dock="Right" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Content="{Binding Settings.SimulatedMouseSensitivity}" ContentStringFormat="0"/>
+
+                        <Slider VerticalAlignment="Center" Value="{Binding Settings.SimulatedMouseSensitivity}"
+                                Minimum="0" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True"/>
+                    </DockPanel>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Input bindings">
+                <GroupBox.Style>
+                    <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding InputDeviceGuid}" Value="00000000-0000-0000-0000-000000000000">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style>
+
+                <Grid Grid.IsSharedSizeScope="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="5"/>
-                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Button Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Content="Play"
-                            Command="{Binding PlayGameCommand}"/>
-                    
-                    <Button Grid.Column="2" Grid.Row="0" Content="Create desktop shortcut"
-                            Command="{Binding CreateDesktopShortcutCommand}"/>
-                    
-                    <Button Grid.Column="2" Grid.Row="2" Content="Create Steam shortcut"
-                            Command="{Binding CreateSteamShortcutCommand}"/>
+                    <local:InputBindingControl Grid.Column="0" Grid.Row="0" Label="Escape"
+                                               InputBinding="{Binding Settings.InputBindings.Escape}"/>
+
+                    <local:InputBindingControl Grid.Column="2" Grid.Row="0" Label="Simulate mouse"
+                                               InputBinding="{Binding Settings.InputBindings.ToggleMouse}"
+                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabledWithInputBinding}"/>
+
+                    <local:InputBindingControl Grid.Column="0" Grid.Row="1" Label="Left click"
+                                               InputBinding="{Binding Settings.InputBindings.MouseLeftClick}"
+                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
+
+                    <local:InputBindingControl Grid.Column="2" Grid.Row="1" Label="Right click"
+                                               InputBinding="{Binding Settings.InputBindings.MouseRightClick}"
+                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
+
+                    <local:InputBindingControl Grid.Column="0" Grid.Row="2" Label="Scroll up"
+                                               InputBinding="{Binding Settings.InputBindings.MouseScrollUp}"
+                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
+
+                    <local:InputBindingControl Grid.Column="2" Grid.Row="2" Label="Scroll down"
+                                               InputBinding="{Binding Settings.InputBindings.MouseScrollDown}"
+                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
                 </Grid>
-            </Grid>
-        </GroupBox>
-    </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Game">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,5" Content="Game path"/>
+                    <DockPanel Grid.Column="1" Grid.Row="0" Margin="0,0,0,5" >
+                        <Button DockPanel.Dock="Right" Padding="10,0" Margin="5,0,0,0" Content="Browse..."
+                                Command="{Binding BrowseGamePathCommand}"/>
+
+                        <TextBox VerticalContentAlignment="Center"
+                                 Text="{Binding Settings.GamePath, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DockPanel>
+
+                    <Label Grid.Column="0" Grid.Row="1" Margin="0,0,0,10" Content="Arguments"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" Margin="0,0,0,10" VerticalContentAlignment="Center"
+                             Text="{Binding Settings.GameArguments, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Content="Play"
+                                Command="{Binding PlayGameCommand}"/>
+
+                        <Button Grid.Column="2" Grid.Row="0" Content="Create desktop shortcut"
+                                Command="{Binding CreateDesktopShortcutCommand}"/>
+
+                        <Button Grid.Column="2" Grid.Row="2" Content="Create Steam shortcut"
+                                Command="{Binding CreateSteamShortcutCommand}"/>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
 </Window>

@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text;
+﻿using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -32,19 +31,12 @@ namespace TruckSimVRTweaks
         }
 
         public static readonly DependencyProperty InputBindingProperty = DependencyProperty.Register(
-            nameof(InputBinding), typeof(InputBinding), typeof(InputBindingControl), new PropertyMetadata());
+            nameof(InputBinding), typeof(InputBinding), typeof(InputBindingControl), new PropertyMetadata(
+                propertyChangedCallback: (d, _) => ((InputBindingControl)d).UpdateAssignButtonContent()));
 
         public InputBindingControl()
         {
             InitializeComponent();
-
-            Loaded += HandleLoaded;
-        }
-
-        private void HandleLoaded(object sender, RoutedEventArgs e)
-        {
-            Loaded -= HandleLoaded;
-            UpdateAssignButtonContent();
         }
 
         private void UpdateAssignButtonContent(TimeSpan? timeRemaining = null)
