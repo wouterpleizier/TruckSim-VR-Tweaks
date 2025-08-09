@@ -49,17 +49,17 @@
                     <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center"
                            Content="Mouse simulation"/>
                     <ComboBox Grid.Column="1" Grid.Row="1"
-                              ItemsSource="{Binding SimulatedMouseTriggers}" DisplayMemberPath="Value"
-                              SelectedValue="{Binding Settings.SimulatedMouseTrigger}" SelectedValuePath="Key" />
+                              ItemsSource="{Binding MouseSimulationModes}" DisplayMemberPath="Value"
+                              SelectedValue="{Binding Settings.MouseSimulationMode}" SelectedValuePath="Key" />
 
-                    <DockPanel Grid.Column="2" Grid.Row="1" IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}">
+                    <DockPanel Grid.Column="2" Grid.Row="1" IsEnabled="{Binding Settings.IsMouseSimulationEnabled}">
                         <Label DockPanel.Dock="Left" HorizontalAlignment="Right" VerticalAlignment="Center"
                                Margin="10,0,0,0" Content="Sensitivity"/>
 
                         <Label DockPanel.Dock="Right" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Content="{Binding Settings.SimulatedMouseSensitivity}" ContentStringFormat="0"/>
+                               Content="{Binding Settings.MouseSimulationSensitivity}" ContentStringFormat="0"/>
 
-                        <Slider VerticalAlignment="Center" Value="{Binding Settings.SimulatedMouseSensitivity}"
+                        <Slider VerticalAlignment="Center" Value="{Binding Settings.MouseSimulationSensitivity}"
                                 Minimum="0" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True"/>
                     </DockPanel>
                 </Grid>
@@ -93,24 +93,24 @@
                                                InputBinding="{Binding Settings.InputBindings.Escape}"/>
 
                     <local:InputBindingControl Grid.Column="2" Grid.Row="0" Label="Simulate mouse"
-                                               InputBinding="{Binding Settings.InputBindings.ToggleMouse}"
-                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabledWithInputBinding}"/>
+                                               InputBinding="{Binding Settings.InputBindings.SimulateMouse}"
+                                               IsEnabled="{Binding Settings.IsMouseSimulationEnabledWithInputBinding}"/>
 
                     <local:InputBindingControl Grid.Column="0" Grid.Row="1" Label="Left click"
                                                InputBinding="{Binding Settings.InputBindings.MouseLeftClick}"
-                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
+                                               IsEnabled="{Binding Settings.IsMouseSimulationEnabled}"/>
 
                     <local:InputBindingControl Grid.Column="2" Grid.Row="1" Label="Right click"
                                                InputBinding="{Binding Settings.InputBindings.MouseRightClick}"
-                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
+                                               IsEnabled="{Binding Settings.IsMouseSimulationEnabled}"/>
 
                     <local:InputBindingControl Grid.Column="0" Grid.Row="2" Label="Scroll up"
                                                InputBinding="{Binding Settings.InputBindings.MouseScrollUp}"
-                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
+                                               IsEnabled="{Binding Settings.IsMouseSimulationEnabled}"/>
 
                     <local:InputBindingControl Grid.Column="2" Grid.Row="2" Label="Scroll down"
                                                InputBinding="{Binding Settings.InputBindings.MouseScrollDown}"
-                                               IsEnabled="{Binding Settings.IsSimulatedMouseEnabled}"/>
+                                               IsEnabled="{Binding Settings.IsMouseSimulationEnabled}"/>
                 </Grid>
             </GroupBox>
 

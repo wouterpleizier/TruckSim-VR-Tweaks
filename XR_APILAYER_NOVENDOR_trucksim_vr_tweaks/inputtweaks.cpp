@@ -99,28 +99,28 @@ void openxr_api_layer::InputTweaks::update(double pitch, double yaw) {
         return;
     }
 
-    m_settings.InputBindings.ToggleMouse.update(state);
+    m_settings.InputBindings.SimulateMouse.update(state);
     m_settings.InputBindings.MouseLeftClick.update(state);
     m_settings.InputBindings.MouseRightClick.update(state);
     m_settings.InputBindings.MouseScrollUp.update(state);
     m_settings.InputBindings.MouseScrollDown.update(state);
     m_settings.InputBindings.Escape.update(state);
 
-    switch (m_settings.SimulatedMouseTrigger) {
-    case SimulatedMouseTrigger::AlwaysDisabled:
+    switch (m_settings.MouseSimulationMode) {
+    case MouseSimulationMode::AlwaysDisabled:
         m_simulatedMouseIsActive = false;
         break;
 
-    case SimulatedMouseTrigger::AlwaysEnabled:
+    case MouseSimulationMode::AlwaysEnabled:
         m_simulatedMouseIsActive = isGameOnForeground();
         break;
 
-    case SimulatedMouseTrigger::HoldToEnable:
-        m_simulatedMouseIsActive = m_settings.InputBindings.ToggleMouse.isHeld();
+    case MouseSimulationMode::HoldToEnable:
+        m_simulatedMouseIsActive = m_settings.InputBindings.SimulateMouse.isHeld();
         break;
 
-    case SimulatedMouseTrigger::PressToToggle:
-        if (m_settings.InputBindings.ToggleMouse.isPressed()) {
+    case MouseSimulationMode::PressToToggle:
+        if (m_settings.InputBindings.SimulateMouse.isPressed()) {
             m_simulatedMouseIsActive = !m_simulatedMouseIsActive;
         }
         break;
@@ -152,7 +152,7 @@ void openxr_api_layer::InputTweaks::update(double pitch, double yaw) {
 
         if (!std::isnan(m_lastPitch) && !std::isnan(m_currentPitch) && !std::isnan(m_lastYaw) &&
             !std::isnan(m_currentYaw)) {
-            double sensitivity = m_settings.SimulatedMouseSensitivity;
+            double sensitivity = m_settings.MouseSimulationSensitivity;
             mouseInput.mi.dwFlags |= MOUSEEVENTF_MOVE;
             mouseInput.mi.dx = static_cast<DWORD>(std::lround((m_lastYaw - m_currentYaw) * sensitivity));
             mouseInput.mi.dy = static_cast<DWORD>(std::lround((m_lastPitch - m_currentPitch) * sensitivity));

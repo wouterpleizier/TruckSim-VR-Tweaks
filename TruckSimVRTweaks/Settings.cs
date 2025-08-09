@@ -4,9 +4,9 @@ namespace TruckSimVRTweaks
 {
     public partial class Settings : ObservableObject
     {
-        [NotifyPropertyChangedFor(nameof(IsSimulatedMouseEnabled), nameof(IsSimulatedMouseEnabledWithInputBinding))]
-        [ObservableProperty] public partial SimulatedMouseTrigger SimulatedMouseTrigger { get; set; } = SimulatedMouseTrigger.AlwaysDisabled;
-        [ObservableProperty] public partial double SimulatedMouseSensitivity { get; set; } = 50.0;
+        [NotifyPropertyChangedFor(nameof(IsMouseSimulationEnabled), nameof(IsMouseSimulationEnabledWithInputBinding))]
+        [ObservableProperty] public partial MouseSimulationMode MouseSimulationMode { get; set; } = MouseSimulationMode.AlwaysDisabled;
+        [ObservableProperty] public partial double MouseSimulationSensitivity { get; set; } = 50.0;
         
         [ObservableProperty] public partial string InputDeviceName { get; set; } = string.Empty;
         [ObservableProperty] public partial Guid InputDeviceGuid { get; set; } = Guid.Empty;
@@ -15,19 +15,19 @@ namespace TruckSimVRTweaks
         [ObservableProperty] public partial string GamePath { get; set; } = string.Empty;
         [ObservableProperty] public partial string GameArguments { get; set; } = string.Empty;
 
-        public bool IsSimulatedMouseEnabled => SimulatedMouseTrigger
-            is SimulatedMouseTrigger.AlwaysEnabled
-            or SimulatedMouseTrigger.HoldToEnable
-            or SimulatedMouseTrigger.PressToToggle;
+        public bool IsMouseSimulationEnabled => MouseSimulationMode
+            is MouseSimulationMode.AlwaysEnabled
+            or MouseSimulationMode.HoldToEnable
+            or MouseSimulationMode.PressToToggle;
 
-        public bool IsSimulatedMouseEnabledWithInputBinding => SimulatedMouseTrigger
-            is SimulatedMouseTrigger.HoldToEnable
-            or SimulatedMouseTrigger.PressToToggle;
+        public bool IsMouseSimulationEnabledWithInputBinding => MouseSimulationMode
+            is MouseSimulationMode.HoldToEnable
+            or MouseSimulationMode.PressToToggle;
     }
 
     public partial class InputBindings : ObservableObject
     {
-        [ObservableProperty] public partial InputBinding ToggleMouse { get; set; } = new();
+        [ObservableProperty] public partial InputBinding SimulateMouse { get; set; } = new();
         [ObservableProperty] public partial InputBinding MouseLeftClick { get; set; } = new();
         [ObservableProperty] public partial InputBinding MouseRightClick { get; set; } = new();
         [ObservableProperty] public partial InputBinding MouseScrollUp { get; set; } = new();
@@ -51,7 +51,7 @@ namespace TruckSimVRTweaks
         POV3,
     }
 
-    public enum SimulatedMouseTrigger
+    public enum MouseSimulationMode
     {
         AlwaysDisabled,
         AlwaysEnabled,

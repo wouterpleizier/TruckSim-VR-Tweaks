@@ -4,14 +4,14 @@
 #include <nlohmann/json.hpp>
 
 namespace openxr_api_layer {
-    enum class SimulatedMouseTrigger { AlwaysDisabled, AlwaysEnabled, HoldToEnable, PressToToggle };
+    enum class MouseSimulationMode { AlwaysDisabled, AlwaysEnabled, HoldToEnable, PressToToggle };
     
-    NLOHMANN_JSON_SERIALIZE_ENUM(SimulatedMouseTrigger,
+    NLOHMANN_JSON_SERIALIZE_ENUM(MouseSimulationMode,
                                  {
-                                     {SimulatedMouseTrigger::AlwaysDisabled, "AlwaysDisabled"},
-                                     {SimulatedMouseTrigger::AlwaysEnabled, "AlwaysEnabled"},
-                                     {SimulatedMouseTrigger::HoldToEnable, "HoldToEnable"},
-                                     {SimulatedMouseTrigger::PressToToggle, "PressToToggle"},
+                                     {MouseSimulationMode::AlwaysDisabled, "AlwaysDisabled"},
+                                     {MouseSimulationMode::AlwaysEnabled, "AlwaysEnabled"},
+                                     {MouseSimulationMode::HoldToEnable, "HoldToEnable"},
+                                     {MouseSimulationMode::PressToToggle, "PressToToggle"},
                                  });
 
     enum class InputType { Unset, Button, POV0, POV1, POV2, POV3 };
@@ -28,7 +28,6 @@ namespace openxr_api_layer {
 
     struct InputBinding {
       public:
-        // NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(InputBinding, Type, Value);
         InputType Type{InputType::Unset};
         int Value{-1};
 
@@ -89,7 +88,7 @@ namespace openxr_api_layer {
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(InputBinding, Type, Value);
 
     struct InputBindings {
-        InputBinding ToggleMouse{};
+        InputBinding SimulateMouse{};
         InputBinding MouseLeftClick{};
         InputBinding MouseRightClick{};
         InputBinding MouseScrollUp{};
@@ -98,16 +97,16 @@ namespace openxr_api_layer {
     };
 
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(
-        InputBindings, ToggleMouse, MouseLeftClick, MouseRightClick, MouseScrollUp, MouseScrollDown, Escape);
+        InputBindings, SimulateMouse, MouseLeftClick, MouseRightClick, MouseScrollUp, MouseScrollDown, Escape);
 
     struct Settings {
-        SimulatedMouseTrigger SimulatedMouseTrigger{SimulatedMouseTrigger::HoldToEnable};
-        double SimulatedMouseSensitivity{50.0};
+        MouseSimulationMode MouseSimulationMode{MouseSimulationMode::HoldToEnable};
+        double MouseSimulationSensitivity{50.0};
         std::string InputDeviceName{};
         std::string InputDeviceGuid{};
         InputBindings InputBindings{};
     };
 
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(
-        Settings, SimulatedMouseTrigger, SimulatedMouseSensitivity, InputDeviceName, InputDeviceGuid, InputBindings);
+        Settings, MouseSimulationMode, MouseSimulationSensitivity, InputDeviceName, InputDeviceGuid, InputBindings);
 } // namespace openxr_api_layer

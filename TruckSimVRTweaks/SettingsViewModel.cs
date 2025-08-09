@@ -54,12 +54,12 @@ namespace TruckSimVRTweaks
             }
         }
 
-        public Dictionary<SimulatedMouseTrigger, string> SimulatedMouseTriggers { get; } = new()
+        public Dictionary<MouseSimulationMode, string> MouseSimulationModes { get; } = new()
         {
-            { SimulatedMouseTrigger.AlwaysDisabled, "Disabled" },
-            { SimulatedMouseTrigger.AlwaysEnabled, "Always enabled" },
-            { SimulatedMouseTrigger.HoldToEnable, "Hold to enable" },
-            { SimulatedMouseTrigger.PressToToggle, "Press to toggle" },
+            { MouseSimulationMode.AlwaysDisabled, "Disabled" },
+            { MouseSimulationMode.AlwaysEnabled, "Always enabled" },
+            { MouseSimulationMode.HoldToEnable, "Hold to enable" },
+            { MouseSimulationMode.PressToToggle, "Press to toggle" },
         };
 
         public SettingsViewModel()
