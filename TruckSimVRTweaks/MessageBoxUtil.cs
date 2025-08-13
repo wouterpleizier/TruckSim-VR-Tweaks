@@ -26,5 +26,16 @@ namespace TruckSimVRTweaks
 
             return MessageBox.Show(messageBuilder.ToString(), App.Title, buttonType, MessageBoxImage.Error);
         }
+
+        public static bool ShowWarning(string message)
+        {
+            StringBuilder messageBuilder = new(message);
+            messageBuilder.AppendLine();
+            messageBuilder.AppendLine();
+            messageBuilder.Append($"{App.Title} will likely not work as expected. Continue anyway?");
+
+            return MessageBox.Show(messageBuilder.ToString(), App.Title, MessageBoxButton.YesNo)
+                == MessageBoxResult.Yes;
+        }
     }
 }

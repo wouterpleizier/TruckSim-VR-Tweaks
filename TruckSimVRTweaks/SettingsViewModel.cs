@@ -94,6 +94,56 @@ namespace TruckSimVRTweaks
             JsonSerializer.Serialize(stream, Settings, _jsonSerializerOptions);
         }
 
+        private bool ValidateSettings()
+        {
+            if (string.IsNullOrEmpty(Settings.GamePath))
+            {
+                MessageBoxUtil.ShowError("Game path is empty");
+                return false;
+            }
+
+            if (!File.Exists(Settings.GamePath))
+            {
+                MessageBoxUtil.ShowError("Game path is invalid");
+                return false;
+            }
+
+            if (Path.GetFileName(Settings.GamePath) is "amtrucks.exe" or "eurotrucks2.exe")
+            {
+                string[] arguments = Settings.GameArguments.Split(' ');
+                if (arguments.Any(argument => argument.ToLowerInvariant() is "-oculus" or "-openvr")
+                    && !MessageBoxUtil.ShowWarning($"Oculus and OpenVR are not supported. You should probably use " +
+                                                   $"the -openxr argument instead."))
+                {
+                    return false;
+                }
+                else if (!arguments.Any(argument => argument.ToLowerInvariant() is "-openxr")
+                    && !MessageBoxUtil.ShowWarning($"The specified game must run in OpenXR mode, but the -openxr " +
+                                                   $"argument was not provided."))
+                {
+                    return false;
+                }
+            }
+
+            if (Settings.InputDeviceGuid == default
+                && !MessageBoxUtil.ShowWarning($"No input device is selected."))
+            {
+                return false;
+            }
+
+            if (Settings.InputDeviceGuid != default
+                && Settings.MouseSimulationMode is MouseSimulationMode.HoldToEnable or MouseSimulationMode.PressToToggle
+                && Settings.InputBindings.SimulateMouse.Type == InputType.Unset
+                && !MessageBoxUtil.ShowWarning($"The mouse simulation mode " +
+                                               $"'{MouseSimulationModes[Settings.MouseSimulationMode]}' will not " +
+                                               $"work unless a button is assigned to the 'Simulate mouse' input."))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         [RelayCommand]
         private void BrowseGamePath()
         {
@@ -119,6 +169,11 @@ namespace TruckSimVRTweaks
         [RelayCommand]
         private void PlayGame()
         {
+            if (!ValidateSettings())
+            {
+                return;
+            }
+
             SaveSettings();
             ApiLayerManager.EnableApiLayer();
             Process.Start(Settings.GamePath, Settings.GameArguments);
@@ -127,6 +182,11 @@ namespace TruckSimVRTweaks
         [RelayCommand]
         private void CreateDesktopShortcut()
         {
+            if (!ValidateSettings())
+            {
+                return;
+            }
+
             try
             {
                 IWshRuntimeLibrary.WshShell shell = new();
@@ -156,6 +216,11 @@ namespace TruckSimVRTweaks
         [RelayCommand]
         private void CreateSteamShortcut()
         {
+            if (!ValidateSettings())
+            {
+                return;
+            }
+
             new SteamShortcutView()
             {
                 Owner = Application.Current.MainWindow,
