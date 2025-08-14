@@ -17,6 +17,9 @@ TruckSim VR Tweaks aims to fix this by letting you move the mouse cursor using y
 - Euro Truck Simulator 2 (1.50 or higher), American Truck Simulator (1.50 or higher) or some other OpenXR-supported game.
 
 ## Download
+> [!CAUTION]
+> TruckSim VR Tweaks may be flagged as a cheat when used in games with anti-cheat software. Use at your own risk.
+
 Download the latest version here: https://github.com/wouterpleizier/TruckSim-VR-Tweaks/releases/latest
 
 Extract the downloaded zip's contents to an empty folder somewhere, then run `TruckSimVRTweaks.exe` to get started.
@@ -55,8 +58,12 @@ For the click and scroll buttons, however, you usually don't need to worry about
 | Create Steam shortcut   | Displays instructions on changing the game's launch options in Steam in order to automatically run TruckSim VR Tweaks in the background whenever you play it.<br><br>Unlike desktop shortcuts, Steam shortcuts specify the game path as `%command%`, which Steam automatically replaces with the game path that it would normally use when playing the game. If you want to use TruckSim VR Tweaks in multiple Steam games (e.g. both ETS2 and ATS), you can copy and paste the launch options and then manually change the arguments if necessary. |
 
 ## Troubleshooting
-### Anti-cheat
-If the game uses anti-cheat software, TruckSim VR Tweaks will likely be flagged as a cheat because it simulates mouse and keyboard inputs. Use at your own risk.
+### TruckSim VR Tweaks doesn't start/work
+If nothing happens or an error occurs when either `TruckSimVRTweaks.exe` or the game is launched, you may need to download and install the following redistributables from Microsoft:
+- https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/9.0.8/windowsdesktop-runtime-9.0.8-win-x64.exe
+- https://aka.ms/vs/17/release/vc_redist.x64.exe
+
+If this doesn't fix the problem, additional information may be provided in a file named `XR_APILAYER_NOVENDOR_trucksim_vr_tweaks.log` in your TruckSim VR Tweaks directory. If the file doesn't exist, look in the following directory instead:<br>`%localappdata%\XR_APILAYER_NOVENDOR_trucksim_vr_tweaks`
 
 ### Other OpenXR applications
 TruckSim VR Tweaks uses its own OpenXR API layer, similar to tools like OpenXR Toolkit. As TruckSim VR Tweaks is intended to be used for specific games only, the API layer is automatically disabled after the game and/or the TruckSim VR Tweaks window closes. However, if the process ends unexpectedly (e.g. Windows crashes or your PC suddenly loses power), the API layer may remain enabled and affect other OpenXR applications as well.
