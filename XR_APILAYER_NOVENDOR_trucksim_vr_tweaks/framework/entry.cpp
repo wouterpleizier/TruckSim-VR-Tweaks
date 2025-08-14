@@ -31,9 +31,6 @@ namespace openxr_api_layer {
     // The path where the DLL is loaded from (eg: to load data files).
     std::filesystem::path dllHome;
 
-    // The path that is writable (eg: to store logs).
-    std::filesystem::path localAppData;
-
     namespace log {
         // The file logger.
         std::ofstream logStream;
@@ -64,13 +61,16 @@ XrResult __declspec(dllexport) XRAPI_CALL
         }
     }
 
-    localAppData = std::filesystem::path(getenv("LOCALAPPDATA")) / LayerName;
-    CreateDirectoryA(localAppData.string().c_str(), nullptr);
-
     // Start logging to file.
     if (!logStream.is_open()) {
-        std::string logFile = (localAppData / (LayerName + ".log")).string();
-        logStream.open(logFile, std::ios_base::ate);
+        logStream.open((dllHome / (LayerName + ".log")).string(), std::ios_base::ate);
+        
+        if (logStream.fail()) {
+            std::filesystem::path localAppData = std::filesystem::path(getenv("LOCALAPPDATA")) / LayerName;
+            CreateDirectoryA(localAppData.string().c_str(), nullptr);
+
+            logStream.open((localAppData / (LayerName + ".log")).string(), std::ios_base::ate);
+        }
     }
 
     DebugLog("--> xrNegotiateLoaderApiLayerInterface\n");
