@@ -49,13 +49,19 @@ For the click and scroll buttons, however, you usually don't need to worry about
 | Setting                 | Description |
 | ----------------------- | ----------- |
 | Game path               | The path to the game's executable file. This depends entirely on the game and where you've installed it, but it'll probably look similar to this (assuming ETS2): `C:\Steam\steamapps\common\Euro Truck Simulator 2\bin\win_x64\eurotrucks2.exe` |
-| Arguments               | The command line options that you want to pass along to the game. For ETS2/ATS, you'll want to at least include `-openxr` (or `-experimental_vr` when using the regular branch in 1.55 and up), as TruckSim VR Tweaks only works in OpenXR mode. |
+| Arguments               | The command line options that you want to pass along to the game. For ETS2/ATS, you'll want to at least include `-openxr` (and `-experimental_vr` when using the regular branch in 1.55 and up), as TruckSim VR Tweaks only works in OpenXR mode. |
 
-| Button                  | Description |
-| ----------------------- | ----------- |
-| Play                    | Play the game using the current settings.<br><br>The TruckSim VR Tweaks window will remain open while the game is running, so you can use this to quickly try out different settings (however, you must close the game and click the Play button again to apply the changes). |
-| Create desktop shortcut | Create a desktop shortcut that will start the game and automatically run TruckSim VR Tweaks in the background.<br><br>The created shortcut will include the current game path and arguments, so you can freely change these settings afterwards to create additional shortcuts for other games where you also want to use TruckSim VR Tweaks. |
-| Create Steam shortcut   | Displays instructions on changing the game's launch options in Steam in order to automatically run TruckSim VR Tweaks in the background whenever you play it.<br><br>Unlike desktop shortcuts, Steam shortcuts specify the game path as `%command%`, which Steam automatically replaces with the game path that it would normally use when playing the game. If you want to use TruckSim VR Tweaks in multiple Steam games (e.g. both ETS2 and ATS), you can copy and paste the launch options and then manually change the arguments if necessary. |
+**`Play` button:**<br>Play the game using the current settings. (Note: the TruckSim VR Tweaks window will remain open, but any settings that are changed during gameplay will not be applied until after you close the game and click `Play` again)
+
+**`Create desktop shortcut` button:**<br>Create a desktop shortcut that will start the game and automatically run TruckSim VR Tweaks in the background.
+
+**`Create Steam shortcut` button:**<br>Displays instructions on changing the game's launch options in Steam in order to automatically run TruckSim VR Tweaks in the background whenever you play it.
+
+> [!WARNING]
+> Many Steam games (including ETS2/ATS) will forcibly launch via Steam, even when the game's executable is launched directly. In most cases, TruckSim VR Tweaks should still work when clicking `Play` or using a desktop shortcut, though Steam may ask you to confirm whether you want to launch the game with the specified launch options. If TruckSim VR Tweaks doesn't work or if you want to skip the confirmation, you should click the `Create Steam shortcut` button and follow the shown instructions. You can then close the TruckSim VR Tweaks window and use Steam to launch the game or create a desktop shortcut.
+
+> [!TIP]
+> Unlike desktop shortcuts, Steam shortcuts specify the game path as `%command%`, which Steam automatically replaces with the game path that it would normally use when playing the game. If you want to use TruckSim VR Tweaks in multiple Steam games (e.g. both ETS2 and ATS), you can copy and paste the launch options without making any changes (aside from the arguments, if necessary).
 
 ## Troubleshooting
 ### TruckSim VR Tweaks doesn't start/work
